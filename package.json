@@ -1,6 +1,6 @@
 {
   "name": "dnt",
-  "version": "0.0.0",
+  "version": "0.0.0-a",
   "description": "Docker Node Tester",
   "main": "dnt.js",
     "repository": {
