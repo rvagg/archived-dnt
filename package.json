@@ -1,0 +1,16 @@
+{
+  "name": "dnt",
+  "version": "0.0.0",
+  "description": "Docker Node Tester",
+  "main": "dnt.js",
+    "repository": {
+    "type": "git",
+    "url": "git://github.com/rvagg/dnt.git"
+  },
+  "author": "Rod Vagg <r@va.gg> (https://github.com/rvagg)",
+  "license": "MIT",
+  "bin": {
+    "dnt": "./dnt.sh",
+    "setup-dnt": "./setup-dnt.sh"
+  }
+}
