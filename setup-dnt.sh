@@ -26,7 +26,7 @@ if [ $# -gt 0 ] ; then
 fi
 
 if [ "X${NODE_VERSIONS}" == "X" ]; then
-  echo "You must set up a NODE_VERSIONS setting in your ${CONFIG_FILE}"
+  echo "You must set up a NODE_VERSIONS list in your ${CONFIG_FILE}"
   exit 1
 fi
 

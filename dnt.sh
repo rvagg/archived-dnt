@@ -10,7 +10,7 @@ COPYDIR=`pwd`
 # How many tests can we run at once without making the computer grind to a halt
 # or causing other unwanted resource problems:
 SIMULTANEOUS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
-RSYNC_CMD="rsync -aAXx --delete --exclude .git --exclude build /dnt-src/ /dnt/"
+COPY_CMD="rsync -aAXx --delete --exclude .git --exclude build /dnt-src/ /dnt/"
 LOG_OK_CMD="tail -1"
 
 if [ `whoami` != "root" ]; then
@@ -35,7 +35,12 @@ if [ $# -gt 0 ] ; then
 fi
 
 if [ "X${NODE_VERSIONS}" == "X" ]; then
-  echo "You must set up a NODE_VERSIONS setting in your ${CONFIG_FILE}"
+  echo "You must set up a NODE_VERSIONS list in your ${CONFIG_FILE}"
+  exit 1
+fi
+
+if [ "X${TEST_CMD}" == "X" ]; then
+  echo "You must set up a TEST_CMD in your ${CONFIG_FILE}"
   exit 1
 fi
 
@@ -54,7 +59,7 @@ test_node() {
 
   # Run test in a Docker container
   docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c " \
-    ${RSYNC_CMD}; \
+    ${COPY_CMD}; \
     ${TEST_CMD} \
   " &> $OUT
 
