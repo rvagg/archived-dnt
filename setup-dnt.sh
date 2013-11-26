@@ -52,7 +52,10 @@ setup_container() {
 }
 
 # A basic dev image with the build tools needed for Node
-setup_container "dev_base" "ubuntu" " \
+# adding "universe" to make it easier to add additional tools for
+# builds that need it
+setup_container "dev_base" "ubuntu:12.10" " \
+  echo 'deb http://archive.ubuntu.com/ubuntu quantal main universe' > /etc/apt/sources.list; \
   apt-get update; \
   apt-get install -y make gcc g++ python git"
 
