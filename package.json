@@ -1,13 +1,17 @@
 {
   "name": "dnt",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Docker Node Tester",
   "main": "dnt.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/rvagg/dnt.git"
   },
-  "keywords": [ "test", "docker", "so much win" ],
+  "keywords": [
+    "test",
+    "docker",
+    "so much win"
+  ],
   "author": "Rod Vagg <r@va.gg> (https://github.com/rvagg)",
   "license": "MIT",
   "bin": {
