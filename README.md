@@ -165,6 +165,12 @@ Yes please, I'm happy to share ownership with people making significant contribu
 
 Currently **DNT** serves my simple needs but I imagine that for a lot of people there will be additional requirements different to my own. Please open an issue or pull request for further discussion!
 
+Contributors / collaborators / maintainers
+------------------------------------------
+
+ * [rvagg](https://github.com/rvagg)
+ * [tearmann](https://github.com/tearmann)
+
 <a name="licence"></a>
 Licence &amp; copyright
 -------------------
