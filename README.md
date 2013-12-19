@@ -123,6 +123,12 @@ Override this command to adjust the way **DNT** copies the mounted source direct
 
 ***Default:*** <i><code>tail -1</code></i>
 
+### CONSOLE_LOG 
+
+***Default:*** <i><code>false</code></i> 
+
+When set to `true` standard error is redirected to standard output and then `tee` sends this standard input to standard output (i.e. the console from which the `dnt` command was executed) and the normal log file will also be logged too. 
+
 **DNT** is designed to work best with [TAP](https://github.com/isaacs/node-tap) which outputs a single **"ok"** or **"not ok"** as the final line of the test execution. The `LOG_OK_CMD` is a command that will take the complete log file piped to it and return either an "ok" to indicate a pass or something else to indicate a failure. i.e. `cat log | ${LOG_OK_CMD}`.
 
 If you are not using TAP-output then you can adjust the `LOG_OK_CMD` to transform the source to return an "ok" when the tests have passed. You may need to resort to a bit of `sed` depending on your testing framework.
