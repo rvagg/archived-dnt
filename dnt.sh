@@ -58,10 +58,18 @@ test_node() {
   fi
 
   # Run test in a Docker container
-  docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c " \
+  
+  if [ "${CONSOLE_LOG}" == "true" ]; then
+    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c " \
     ${COPY_CMD}; \
     ${TEST_CMD} \
-  " &> $OUT
+    " 2>&1 | tee $OUT
+  else
+   docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c " \
+    ${COPY_CMD}; \
+    ${TEST_CMD} \
+    " &> $OUT
+  fi 
 
   # Print status
   printf "Node@\033[1m\033[33m%-8s\033[39m\033[22m: " $NV

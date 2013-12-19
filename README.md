@@ -127,6 +127,12 @@ Override this command to adjust the way **DNT** copies the mounted source direct
 
 If you are not using TAP-output then you can adjust the `LOG_OK_CMD` to transform the source to return an "ok" when the tests have passed. You may need to resort to a bit of `sed` depending on your testing framework.
 
+### `CONSOLE_LOG`
+
+***Default:*** <i><code>false</code></i> 
+
+When set to `true` standard error is redirected to standard output and then `tee` sends this standard input to standard output (i.e. the console from which the `dnt` command was executed) and the normal log file will also be logged too. 
+
 Example .dntrc files
 --------------------
 
