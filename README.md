@@ -156,6 +156,8 @@ What about them?
 
 Solaris invented containers with "zones" and Solaris users are grown-ups and can take care of themselves.
 
+Mac users can install docker via [docmac](https://github.com/thlorenz/docmac): `npm install -g docmac && docmac` or [follow these instructions](http://docs.docker.io/en/latest/installation/mac/).
+
 The rest of you babies, well... are you really *deploying* on those toys?
 
 Contributing
