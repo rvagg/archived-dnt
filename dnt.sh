@@ -72,8 +72,13 @@ test_node() {
   fi 
 
   # Print status
+
+  LAST_LINE=`cat /tmp/${OUTPUT_PREFIX}dnt-${NV}.out | $LOG_OK_CMD`
+
   printf "Node@\033[1m\033[33m%-8s\033[39m\033[22m: " $NV
-  if [[ `cat /tmp/${OUTPUT_PREFIX}dnt-${NV}.out | $LOG_OK_CMD` == "ok" ]]; then
+  if [[ $LAST_LINE  == "ok" ]]; then
+    echo -ne "\033[1m\033[32mPASS\033[39m\033[22m"
+  elif [[ $LAST_LINE == "# fail 0" ]]; then
     echo -ne "\033[1m\033[32mPASS\033[39m\033[22m"
   else
     echo -ne "\033[1m\033[31mFAIL\033[39m\033[22m"
