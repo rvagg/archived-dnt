@@ -66,7 +66,7 @@ setup_container "node_dev" "dev_base" " \
 # For each version of Node, make an image by checking out that branch
 # on the repo, building it and installing it
 for NV in $NODE_VERSIONS; do
-  setup_container "node_dev-$NV" "node_dev" " \
+  setup_container "node_dev/$NV" "node_dev" " \
     cd /usr/src/node && \
     git fetch origin && \
     git checkout $NV && \

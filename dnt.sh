@@ -26,7 +26,7 @@ else
 fi
 
 # The versions of Node to test, this assumes that we have a Docker image
-# set up with the name "node_dev-<version>"
+# set up with the name "node_dev/<version>"
 #NODE_VERSIONS=`cat ${__dirname}/node_versions.list`
 
 if [ $# -gt 0 ] ; then
@@ -49,7 +49,7 @@ START_TS=`date +%s`
 test_node() {
   local OUT=/tmp/${OUTPUT_PREFIX}dnt-${NV}.out
   local NV=$1
-  local ID=node_dev-$NV
+  local ID=node_dev/$NV
 
   docker inspect "$ID" &> /dev/null
   if [[ $? -ne 0 ]]; then
