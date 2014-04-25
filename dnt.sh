@@ -73,7 +73,7 @@ test_node() {
 
   # Print status
 
-  LAST_LINE=`cat /tmp/${OUTPUT_PREFIX}dnt-${NV}.out | $LOG_OK_CMD`
+  LAST_LINE=$(eval "cat /tmp/${OUTPUT_PREFIX}dnt-${NV}.out | $LOG_OK_CMD")
 
   printf "Node@\033[1m\033[33m%-8s\033[39m\033[22m: " $NV
   if [[ $LAST_LINE  == "ok" ]]; then
