@@ -139,6 +139,7 @@ Example .dntrc files
  * **[LevelDOWN](https://github.com/rvagg/node-leveldown/blob/master/.dntrc)**: simple requirements, latest 0.8, 0.10, 0.11 and master.
  * **[NAN](https://github.com/rvagg/nan/blob/master/.dntrc)**: needs to test across many versions of Node, including master. Has tests installed and run in non-root directory.
  * **[node-ssh](https://github.com/rvagg/node-libssh/blob/master/.dntrc)**: latest 0.10, 0.11 and master only. Needs additional software installed on the image prior to compile.
+ * **[rvagg/node-canvas](https://github.com/rvagg/node-canvas/blob/master/.dntrc)**: latest 0.8, 0.10, 0.11 and master only. Needs Cairo installed and translates the *dot* reporter for Mocha tests.
 
 Other considerations
 --------------------
