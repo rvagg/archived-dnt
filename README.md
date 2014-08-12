@@ -5,7 +5,7 @@ DNT: Docker Node Tester
 
 **Use [Docker](http://www.docker.io) to test code against multiple versions of Node.js simultaneously**
 
-<img src="http://www.docker.io/static/img/homepage-docker-logo.png" width="138" height="114"> <img src="http://nodejs.org/images/logos/nodejs-dark.png" width="212" height="114"> <img src="http://img.pandawhale.com/29490-Picard-applause-clapping-gif-s5nz.gif" width="151" height="114">
+<img src="http://i.imgur.com/Zo1kzqd.png" width="200" height="114"> <img src="http://nodejs.org/images/logos/nodejs-dark.png" width="212" height="114"> <img src="http://img.pandawhale.com/29490-Picard-applause-clapping-gif-s5nz.gif" width="151" height="114">
 
 ![NAN DNT](http://r.va.gg/images/2013/11/nan-dnt.png)
 
