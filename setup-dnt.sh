@@ -8,11 +8,6 @@ CONFIG_FILE=".dntrc"
 # For `make -j X`
 BUILD_JOBS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
 
-if [ `whoami` != "root" ]; then
-  echo "Must run dnt as root"
-  exit 1
-fi
-
 if [ -f $CONFIG_FILE ]; then
   source ./$CONFIG_FILE
 else
@@ -55,8 +50,10 @@ setup_container() {
 # adding "universe" to make it easier to add additional tools for
 # builds that need it
 setup_container "dev_base" "ubuntu:14.04" " \
-  apt-get update; \
-  apt-get install -y build-essential python git rsync"
+  apt-get update && \
+  apt-get install -y build-essential python git rsync && \
+  adduser --gecos dnt --home /dnt/ --disabled-login dnt
+"
 
 # The main Node repo in an image by itself
 setup_container "node_dev" "dev_base" " \

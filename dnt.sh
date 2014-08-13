@@ -13,11 +13,6 @@ SIMULTANEOUS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
 COPY_CMD="rsync -aAXx --delete --exclude .git --exclude build /dnt-src/ /dnt/"
 LOG_OK_CMD="tail -1"
 
-if [ `whoami` != "root" ]; then
-  echo "Must run dnt as root"
-  exit 1
-fi
-
 if [ -f $CONFIG_FILE ]; then
   source ./$CONFIG_FILE
 else
@@ -60,12 +55,12 @@ test_node() {
   # Run test in a Docker container
   
   if [ "${CONSOLE_LOG}" == "true" ]; then
-    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c " \
+    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/su dnt -c " \
     ${COPY_CMD}; \
     ${TEST_CMD} \
     " 2>&1 | tee $OUT
   else
-   docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c " \
+   docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/su dnt -c " \
     ${COPY_CMD}; \
     ${TEST_CMD} \
     " &> $OUT
