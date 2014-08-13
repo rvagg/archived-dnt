@@ -56,7 +56,7 @@ setup_container() {
 # builds that need it
 setup_container "dev_base" "ubuntu:14.04" " \
   apt-get update; \
-  apt-get install -y build-essential python git"
+  apt-get install -y build-essential python git rsync"
 
 # The main Node repo in an image by itself
 setup_container "node_dev" "dev_base" " \
