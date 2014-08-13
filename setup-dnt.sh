@@ -52,7 +52,8 @@ setup_container() {
 setup_container "dev_base" "ubuntu:14.04" " \
   apt-get update && \
   apt-get install -y build-essential python git rsync && \
-  adduser --gecos dnt --home /dnt/ --disabled-login dnt
+  adduser --gecos dnt --home /dnt/ --disabled-login dnt && \
+  echo "dnt:dnt" | chpasswd
 "
 
 # The main Node repo in an image by itself
