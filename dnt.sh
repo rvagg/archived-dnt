@@ -12,6 +12,7 @@ COPYDIR=`pwd`
 SIMULTANEOUS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
 COPY_CMD="rsync -aAXx --delete --exclude .git --exclude build /dnt-src/ /dnt/"
 LOG_OK_CMD="tail -1"
+IOJS_VERSIONS=
 
 if [ -f $CONFIG_FILE ]; then
   source ./$CONFIG_FILE
@@ -43,8 +44,9 @@ START_TS=`date +%s`
 
 test_node() {
   local OUT=/tmp/${OUTPUT_PREFIX}dnt-${NV}.out
-  local NV=$1
-  local ID=node_dev/$NV
+  local TYPE=$1
+  local NV=$2
+  local ID=${TYPE}_dev/${NV}
 
   docker inspect "$ID" &> /dev/null
   if [[ $? -ne 0 ]]; then
@@ -70,7 +72,7 @@ test_node() {
 
   LAST_LINE=$(eval "cat /tmp/${OUTPUT_PREFIX}dnt-${NV}.out | $LOG_OK_CMD")
 
-  printf "Node@\033[1m\033[33m%-8s\033[39m\033[22m: " $NV
+  printf "${TYPE}@\033[1m\033[33m%-8s\033[39m\033[22m: " $NV
   if [[ $LAST_LINE  == "ok" ]]; then
     echo -ne "\033[1m\033[32mPASS\033[39m\033[22m"
   elif [[ $LAST_LINE == "# fail 0" ]]; then
@@ -84,7 +86,23 @@ test_node() {
 # Run all tests
 _C=0
 for NV in $NODE_VERSIONS; do
-  test_node $NV &
+  test_node "node" $NV &
+  # Small break between each start, gives Docker breathing room
+  sleep 0.5
+
+  # Crude limiting on the number of simultaneous runs
+  let _C=_C+1
+  if [[ $((_C % ${SIMULTANEOUS})) == 0 ]]; then
+    wait
+  fi
+done
+
+wait
+
+# Run all tests
+_C=0
+for NV in $IOJS_VERSIONS; do
+  test_node "iojs" $NV &
   # Small break between each start, gives Docker breathing room
   sleep 0.5
 
@@ -99,6 +117,6 @@ wait
 
 END_TS=`date +%s`
 DURATION=$((END_TS-START_TS))
-VERSIONS=$(echo $NODE_VERSIONS | wc -w)
+VERSIONS=$(echo $NODE_VERSIONS $IOJS_VERSIONS | wc -w)
 
 echo "Took ${DURATION}s to run ${VERSIONS} versions of Node"

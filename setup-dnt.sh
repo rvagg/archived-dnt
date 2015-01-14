@@ -7,6 +7,8 @@
 CONFIG_FILE=".dntrc"
 # For `make -j X`
 BUILD_JOBS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
+NODE_VERSIONS=
+IOJS_VERSION=
 
 if [ -f $CONFIG_FILE ]; then
   source ./$CONFIG_FILE
@@ -17,7 +19,7 @@ fi
 
 if [ $# -gt 0 ] ; then
   NODE_VERSIONS=$*
-  echo "Using Node versions: ${NODE_VERSIONS}"
+  echo "Using Node.js versions: ${NODE_VERSIONS}"
 fi
 
 if [ "X${NODE_VERSIONS}" == "X" ]; then
@@ -60,14 +62,31 @@ setup_container "dev_base" "ubuntu:14.04" " \
 setup_container "node_dev" "dev_base" " \
   git clone https://github.com/joyent/node.git /usr/src/node/"
 
+if [ "X${IOJS_VERSIONS}" != "X" ]; then
+  # The main io.js repo in an image by itself
+  setup_container "iojs_dev" "dev_base" " \
+    git clone https://github.com/iojs/io.js.git /usr/src/node/"
+fi
+
 # For each version of Node, make an image by checking out that branch
 # on the repo, building it and installing it
 for NV in $NODE_VERSIONS; do
   setup_container "node_dev/$NV" "node_dev" " \
     cd /usr/src/node && \
     git fetch origin && \
-    git checkout $NV && \
-    git pull origin $NV && \
+    git checkout ${NV} && \
+    ./configure && \
+    make -j${BUILD_JOBS} && \
+    make install"
+done
+
+# For each version of io.js, make an image by checking out that tag
+# on the repo, building it and installing it
+for NV in $IOJS_VERSIONS; do
+  setup_container "iojs_dev/$NV" "iojs_dev" " \
+    cd /usr/src/node && \
+    git fetch origin && \
+    git checkout ${NV} && \
     ./configure && \
     make -j${BUILD_JOBS} && \
     make install"
