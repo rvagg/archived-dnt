@@ -55,17 +55,15 @@ test_node() {
   fi
 
   # Run test in a Docker container
-  
+  RUNCMD="/bin/su -s /bin/bash dnt -c '${COPY_CMD};${TEST_CMD}'"
+  if [ "X${APT_INSTALL}" != "X" ]; then
+    RUNCMD="apt-get update && apt-get install -y ${APT_INSTALL} && ${RUNCMD}"
+  fi
+
   if [ "${CONSOLE_LOG}" == "true" ]; then
-    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/su dnt -c " \
-    ${COPY_CMD}; \
-    ${TEST_CMD} \
-    " 2>&1 | tee $OUT
+    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" 2>&1 | tee $OUT
   else
-   docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/su dnt -c " \
-    ${COPY_CMD}; \
-    ${TEST_CMD} \
-    " &> $OUT
+    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" &> $OUT
   fi 
 
   # Print status
