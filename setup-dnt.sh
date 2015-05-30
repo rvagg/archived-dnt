@@ -65,7 +65,7 @@ setup_container "node_dev" "dev_base" " \
 if [ "X${IOJS_VERSIONS}" != "X" ]; then
   # The main io.js repo in an image by itself
   setup_container "iojs_dev" "dev_base" " \
-    git clone https://github.com/iojs/io.js.git /usr/src/node/"
+    git clone https://github.com/nodejs/io.js.git /usr/src/node/"
 fi
 
 # For each version of Node, make an image by checking out that branch
