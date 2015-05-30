@@ -61,9 +61,9 @@ test_node() {
   fi
 
   if [ "${CONSOLE_LOG}" == "true" ]; then
-    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" 2>&1 | tee $OUT
+    docker run --rm -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" 2>&1 | tee $OUT
   else
-    docker run -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" &> $OUT
+    docker run --rm -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" &> $OUT
   fi 
 
   # Print status
