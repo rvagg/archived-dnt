@@ -3,7 +3,7 @@ DNT: Docker Node Tester
 
 [![NPM](https://nodei.co/npm/dnt.png?downloads)](https://nodei.co/npm/dnt/)
 
-**Use [Docker](http://www.docker.io) to test code against multiple versions of Node.js simultaneously**
+**Use [Docker](http://www.docker.io) to test code against multiple versions of Node.js and io.js simultaneously**
 
 <img src="http://i.imgur.com/Zo1kzqd.png" width="200" height="114"> <img src="http://nodejs.org/images/logos/nodejs-dark.png" width="212" height="114"> <img src="http://img.pandawhale.com/29490-Picard-applause-clapping-gif-s5nz.gif" width="151" height="114">
 
@@ -36,7 +36,7 @@ For each Node version, you will end up with an image named "node_dev-VERSION" wh
 .dntrc
 ------
 
-Both `setup-dnt` and `dnt` read the ***.dntrc*** file in the current working directory to load the current configuration. The file is simply read as a Bash script so it can contain arbitrary Bash commands. To configure **DNT** you need to set some key variables: `NODE_VERSIONS` and `TEST_CMD`. Optional variables include `COPYDIR`, `OUTPUT_PREFIX`, `SIMULTANEOUS`, `COPY_CMD` and `LOG_OK_CMD`.
+Both `setup-dnt` and `dnt` read the ***.dntrc*** file in the current working directory to load the current configuration. The file is simply read as a Bash script so it can contain arbitrary Bash commands. To configure **DNT** you need to set some key variables: `NODE_VERSIONS` and `TEST_CMD`. Optional variables include `IOJS_VERSIONS`, `COPYDIR`, `OUTPUT_PREFIX`, `SIMULTANEOUS`, `COPY_CMD` and `LOG_OK_CMD`.
 
 A basic ***.dntrc*** file for a Node package with a native add-on component might look like this:
 
@@ -44,7 +44,8 @@ A basic ***.dntrc*** file for a Node package with a native add-on component migh
 ## DNT config file
 ## see https://github.com/rvagg/dnt
 
-NODE_VERSIONS="master v0.11.9 v0.10.22"
+NODE_VERSIONS="master v0.12.4 v0.10.38"
+IOJS_VERSIONS="v2.1.0 v1.8.3"
 OUTPUT_PREFIX="libssh-"
 TEST_CMD="\
   cd /dnt/ &&                                                    \
@@ -80,6 +81,10 @@ $ sudo setup-dnt
 ```
 
 This removes the Docker image for master and rebuilts it from the latest master in the Node repository.
+
+### `IOJS_VERSIONS`
+
+Same as `NODE_VERSIONS` but for versions released from the [io.js](https://github.com/nodejs/io.js) repository.
 
 ### `TEST_CMD`
 
