@@ -43,7 +43,7 @@ setup_container() {
 
   # No such image, so make it
   echo "Did not find container container [$ID], creating..."
-  docker run $BASE /bin/bash -c "$RUN"
+  docker run -ti $BASE /bin/bash -c "$RUN"
   sleep 2
   docker commit `docker ps -l -q` $ID
 }
