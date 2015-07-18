@@ -6,7 +6,7 @@
 
 CONFIG_FILE=".dntrc"
 # For `make -j X`
-BUILD_JOBS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
+BUILD_JOBS=$(getconf _NPROCESSORS_ONLN)
 NODE_VERSIONS=
 IOJS_VERSION=
 
@@ -42,10 +42,10 @@ setup_container() {
   fi
 
   # No such image, so make it
-  echo "Did not find container container [$ID], creating..."
-  docker run -ti $BASE /bin/bash -c "$RUN"
+  echo "Did not find container [$ID], creating..."
+  docker run -i $BASE /bin/bash -c "$RUN"
   sleep 2
-  docker commit `docker ps -l -q` $ID
+  docker commit $(docker ps -l -q) $ID
 }
 
 # A basic dev image with the build tools needed for Node

@@ -6,10 +6,10 @@
 
 CONFIG_FILE=".dntrc"
 OUTPUT_PREFIX=""
-COPYDIR=`pwd`
+COPYDIR=$(pwd)
 # How many tests can we run at once without making the computer grind to a halt
 # or causing other unwanted resource problems:
-SIMULTANEOUS=`grep '^processor\s*\:\s*[0-9][0-9]*$' /proc/cpuinfo | wc -l`
+SIMULTANEOUS=$(getconf _NPROCESSORS_ONLN)
 COPY_CMD="rsync -aAXx --delete --exclude .git --exclude build /dnt-src/ /dnt/"
 LOG_OK_CMD="tail -1"
 IOJS_VERSIONS=
@@ -23,7 +23,7 @@ fi
 
 # The versions of Node to test, this assumes that we have a Docker image
 # set up with the name "node_dev/<version>"
-#NODE_VERSIONS=`cat ${__dirname}/node_versions.list`
+#NODE_VERSIONS=$(cat ${__dirname}/node_versions.list)
 
 if [ $# -gt 0 ] ; then
   NODE_VERSIONS=$*
@@ -40,7 +40,7 @@ if [ "X${TEST_CMD}" == "X" ]; then
   exit 1
 fi
 
-START_TS=`date +%s`
+START_TS=$(date +%s)
 
 test_node() {
   local OUT=/tmp/${OUTPUT_PREFIX}dnt-${NV}.out
@@ -60,10 +60,16 @@ test_node() {
     RUNCMD="apt-get update && apt-get install -y ${APT_INSTALL} && ${RUNCMD}"
   fi
 
+  DOCKER_EXEC="docker run -i --rm"
+
+  if [ "X${RUN_TIMEOUT}" != "X" ]; then
+    DOCKER_EXEC="timeout $RUN_TIMEOUT docker run -i --rm"
+  fi
+
   if [ "${CONSOLE_LOG}" == "true" ]; then
-    docker run -ti --rm -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" 2>&1 | tee $OUT
+    $DOCKER_EXEC -v ~/.npm/:/dnt/.npm/ -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" 2>&1 | tee $OUT
   else
-    docker run --rm -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" &> $OUT
+    $DOCKER_EXEC -v ~/.npm/:/dnt/.npm/ -v ${COPYDIR}:/dnt-src/:ro $ID /bin/bash -c "$RUNCMD" &> $OUT
   fi 
 
   # Print status
@@ -113,7 +119,7 @@ done
 
 wait
 
-END_TS=`date +%s`
+END_TS=$(date +%s)
 DURATION=$((END_TS-START_TS))
 VERSIONS=$(echo $NODE_VERSIONS $IOJS_VERSIONS | wc -w)
 
