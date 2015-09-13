@@ -60,30 +60,12 @@ setup_container "dev_base" "ubuntu:14.04" " \
 
 # The main Node repo in an image by itself
 setup_container "node_dev" "dev_base" " \
-  git clone https://github.com/joyent/node.git /usr/src/node/"
-
-if [ "X${IOJS_VERSIONS}" != "X" ]; then
-  # The main io.js repo in an image by itself
-  setup_container "iojs_dev" "dev_base" " \
-    git clone https://github.com/nodejs/io.js.git /usr/src/node/"
-fi
+  git clone https://github.com/nodejs/node.git /usr/src/node/"
 
 # For each version of Node, make an image by checking out that branch
 # on the repo, building it and installing it
-for NV in $NODE_VERSIONS; do
+for NV in $NODE_VERSIONS $IOJS_VERSIONS; do
   setup_container "node_dev/$NV" "node_dev" " \
-    cd /usr/src/node && \
-    git fetch origin && \
-    git checkout ${NV} && \
-    ./configure && \
-    make -j${BUILD_JOBS} && \
-    make install"
-done
-
-# For each version of io.js, make an image by checking out that tag
-# on the repo, building it and installing it
-for NV in $IOJS_VERSIONS; do
-  setup_container "iojs_dev/$NV" "iojs_dev" " \
     cd /usr/src/node && \
     git fetch origin && \
     git checkout ${NV} && \

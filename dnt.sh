@@ -21,6 +21,7 @@ else
   exit 1
 fi
 
+NODE_VERSIONS="$NODE_VERSIONS $IOJS_VERSIONS"
 # The versions of Node to test, this assumes that we have a Docker image
 # set up with the name "node_dev/<version>"
 #NODE_VERSIONS=$(cat ${__dirname}/node_versions.list)
@@ -103,24 +104,8 @@ done
 
 wait
 
-# Run all tests
-_C=0
-for NV in $IOJS_VERSIONS; do
-  test_node "iojs" $NV &
-  # Small break between each start, gives Docker breathing room
-  sleep 0.5
-
-  # Crude limiting on the number of simultaneous runs
-  let _C=_C+1
-  if [[ $((_C % ${SIMULTANEOUS})) == 0 ]]; then
-    wait
-  fi
-done
-
-wait
-
 END_TS=$(date +%s)
 DURATION=$((END_TS-START_TS))
-VERSIONS=$(echo $NODE_VERSIONS $IOJS_VERSIONS | wc -w)
+VERSIONS=$(echo $NODE_VERSIONS | wc -w)
 
 echo "Took ${DURATION}s to run ${VERSIONS} versions of Node"

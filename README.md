@@ -36,7 +36,7 @@ For each Node version, you will end up with an image named "node_dev-VERSION" wh
 .dntrc
 ------
 
-Both `setup-dnt` and `dnt` read the ***.dntrc*** file in the current working directory to load the current configuration. The file is simply read as a Bash script so it can contain arbitrary Bash commands. To configure **DNT** you need to set some key variables: `NODE_VERSIONS` and `TEST_CMD`. Optional variables include `IOJS_VERSIONS`, `COPYDIR`, `OUTPUT_PREFIX`, `SIMULTANEOUS`, `COPY_CMD` and `LOG_OK_CMD`.
+Both `setup-dnt` and `dnt` read the ***.dntrc*** file in the current working directory to load the current configuration. The file is simply read as a Bash script so it can contain arbitrary Bash commands. To configure **DNT** you need to set some key variables: `NODE_VERSIONS` and `TEST_CMD`. Optional variables include `COPYDIR`, `OUTPUT_PREFIX`, `SIMULTANEOUS`, `COPY_CMD` and `LOG_OK_CMD`.
 
 A basic ***.dntrc*** file for a Node package with a native add-on component might look like this:
 
@@ -44,8 +44,7 @@ A basic ***.dntrc*** file for a Node package with a native add-on component migh
 ## DNT config file
 ## see https://github.com/rvagg/dnt
 
-NODE_VERSIONS="master v0.12.4 v0.10.38"
-IOJS_VERSIONS="v2.1.0 v1.8.3"
+NODE_VERSIONS="master v0.12.4 v0.10.38 v3.3.0 v4.0.0"
 OUTPUT_PREFIX="libssh-"
 TEST_CMD="\
   cd /dnt/ &&                                                    \
@@ -60,6 +59,8 @@ TEST_CMD="\
 ***Required***
 
 A space-separated list of branches or tags in the Node.js repository. For each version listed, the Docker image for that version will be run with a copy of your source code and the `TEST_CMD` will be executed.
+
+This can also include io.js version numbers.
 
 Note also you can override the list by supplying any number of versions as command-line arguments:
 
@@ -81,10 +82,6 @@ $ sudo setup-dnt
 ```
 
 This removes the Docker image for master and rebuilts it from the latest master in the Node repository.
-
-### `IOJS_VERSIONS`
-
-Same as `NODE_VERSIONS` but for versions released from the [io.js](https://github.com/nodejs/io.js) repository.
 
 ### `TEST_CMD`
 
