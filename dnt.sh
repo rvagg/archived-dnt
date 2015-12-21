@@ -47,19 +47,20 @@ test_node() {
   local OUT=/tmp/${OUTPUT_PREFIX}dnt-${NV}.out
   local TYPE=$1
   local NV=$2
-  local ID=${TYPE}_dev/${NV}
+  local ID="node_dev"
 
   docker inspect "$ID" &> /dev/null
   if [[ $? -ne 0 ]]; then
-    echo -e "\033[31mCould not find container for [\033[1m$NV\033[22m]\033[39m"
+    echo -e "\033[31mCould not find container, please run setup-dnt\033[22m]\033[39m"
     return
   fi
 
   # Run test in a Docker container
-  RUNCMD="/bin/su -s /bin/bash dnt -c '${COPY_CMD};${TEST_CMD}'"
+  RUNCMD="/bin/su -s /bin/bash dnt -c '. /nvm/nvm.sh && ${COPY_CMD}"
   if [ "X${APT_INSTALL}" != "X" ]; then
     RUNCMD="apt-get update && apt-get install -y ${APT_INSTALL} && ${RUNCMD}"
   fi
+  RUNCMD="${RUNCMD} && nvm use ${NV} && ${TEST_CMD}'"
 
   DOCKER_EXEC="docker run -i --rm"
 

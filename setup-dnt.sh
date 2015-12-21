@@ -8,7 +8,7 @@ CONFIG_FILE=".dntrc"
 # For `make -j X`
 BUILD_JOBS=$(getconf _NPROCESSORS_ONLN)
 NODE_VERSIONS=
-IOJS_VERSION=
+IOJS_VERSIONS=
 
 if [ -f $CONFIG_FILE ]; then
   source ./$CONFIG_FILE
@@ -53,23 +53,24 @@ setup_container() {
 # builds that need it
 setup_container "dev_base" "ubuntu:14.04" " \
   apt-get update && \
-  apt-get install -y build-essential python git rsync && \
+  apt-get install -y git rsync wget && \
   adduser --gecos dnt --home /dnt/ --disabled-login dnt && \
   echo "dnt:dnt" | chpasswd
 "
 
-# The main Node repo in an image by itself
-setup_container "node_dev" "dev_base" " \
-  git clone https://github.com/nodejs/node.git /usr/src/node/"
+docker inspect node_dev &> /dev/null
+  if [[ $? -eq 0 ]]; then
+    docker rmi --force node_dev
+  fi
 
-# For each version of Node, make an image by checking out that branch
-# on the repo, building it and installing it
+INSTALL="echo 'Starting Installs'"
 for NV in $NODE_VERSIONS $IOJS_VERSIONS; do
-  setup_container "node_dev/$NV" "node_dev" " \
-    cd /usr/src/node && \
-    git fetch origin && \
-    git checkout ${NV} && \
-    ./configure && \
-    make -j${BUILD_JOBS} && \
-    make install"
+  INSTALL="$INSTALL && nvm install $NV"
 done
+
+setup_container "node_dev" "dev_base" " \
+  wget https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh
+  NVM_DIR='/nvm' bash install.sh
+  source /nvm/nvm.sh
+  $INSTALL
+"
