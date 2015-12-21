@@ -53,7 +53,7 @@ setup_container() {
 # builds that need it
 setup_container "dev_base" "ubuntu:14.04" " \
   apt-get update && \
-  apt-get install -y git rsync curl && \
+  apt-get install -y git rsync wget && \
   adduser --gecos dnt --home /dnt/ --disabled-login dnt && \
   echo "dnt:dnt" | chpasswd
 "
